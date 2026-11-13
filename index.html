@@ -129,6 +129,13 @@
       }
       .hero-bio { color: var(--ink-soft); max-width: 34rem; margin: 8px 0 0; font-size: 1.05rem; }
       .hero-bio strong { color: var(--ink); }
+      .hero-day {
+        margin: 22px 0 0; display: inline-flex; align-items: center; gap: 8px;
+        font-weight: 700; font-size: 0.95rem; color: var(--purple-ink);
+        background: var(--surface-2); border: 1px solid var(--line);
+        border-radius: 999px; padding: 8px 16px;
+      }
+      .hero-day strong { color: var(--ink); }
       .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
       .btn {
         display: inline-flex; align-items: center; gap: 10px;
@@ -313,6 +320,7 @@
                 Apple Music
               </a>
             </div>
+            <p class="hero-day">🛸 <span><strong>January 22</strong> — Alien Vato Day</span></p>
           </div>
           <div class="hero-art">
             <div class="frame">
@@ -340,6 +348,7 @@
                 <span class="chip">Single · 2026</span>
                 <span class="chip">Hip-hop × electronic</span>
                 <span class="chip">San Diego, CA</span>
+                <span class="chip">Alien Vato Day · Jan 22</span>
               </div>
             </div>
             <div>
@@ -355,10 +364,7 @@
                 <a class="btn btn-spotify btn-sm" href="https://open.spotify.com/artist/6PF92POQRFcDpK8mc5kNZw" target="_blank" rel="noopener">Spotify artist page</a>
                 <a class="btn btn-apple btn-sm" href="https://music.apple.com/us/artist/alien-vato/1857190099" target="_blank" rel="noopener">Apple Music artist page</a>
               </div>
-              <p class="track-sub" style="margin-top:22px">
-                And this is just the landing. The <strong style="color:var(--ink)">debut album touches down
-                Friday, January 22, 2027</strong> — Alien Vato Day. 🛸
-              </p>
+
             </div>
           </div>
         </div>
@@ -461,10 +467,11 @@
                 platforms, and he battled through to the <strong>Top 5 round of Next Music Star</strong>.
               </p>
               <p>
-                The debut album lands <strong>January 22, 2027</strong>. Until then —
-                stream LMAV, and watch the sky over the 619.
+                Stream LMAV, and watch the sky over the 619. And mark the date:
+                <strong>January 22 is Alien Vato Day.</strong>
               </p>
               <ul class="fact-list">
+                <li><span class="k">Alien Vato Day</span><span class="v"><strong>January 22</strong></span></li>
                 <li><span class="k">From</span><span class="v"><strong>San Diego, California</strong> — the 619</span></li>
                 <li><span class="k">Sound</span><span class="v">Hip-hop × electronic, with rock in the blend</span></li>
                 <li><span class="k">Biggest inspiration</span><span class="v"><strong>Oliver Tree</strong> — “loved his freedom”</span></li>
@@ -483,7 +490,7 @@
         <div class="wrap">
           <p class="sec-label">Connect</p>
           <h2>Join the invasion</h2>
-          <p>New music and the road to the album — it all lands on Instagram first. Follow along and say what’s up.</p>
+          <p>New music — it all lands on Instagram first. Follow along and say what’s up. January 22 is Alien Vato Day.</p>
           <div class="social-row">
             <a class="btn btn-spotify" href="https://www.instagram.com/alien_vato/" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9-.1-1.3-.1-1.6-.1-4.8s0-3.6.1-4.8C2.4 4 4 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zm0 3.1a6.7 6.7 0 1 0 0 13.4 6.7 6.7 0 0 0 0-13.4zm0 11a4.4 4.4 0 1 1 0-8.7 4.4 4.4 0 0 1 0 8.7zm6.9-11.3a1.6 1.6 0 1 1-3.1 0 1.6 1.6 0 0 1 3.1 0z"/></svg>
@@ -712,6 +719,7 @@
         var loopOn = false;
         function kickLoop() { if (!loopOn) { loopOn = true; requestAnimationFrame(step); } }
         function step() {
+          loopOn = false;
           frame++;
           // background star drift
           for (var i = 0; i < bgStars.length; i++) {
@@ -719,7 +727,7 @@
             bs.y += bs.s * (state === "playing" ? speed : 0.4);
             if (bs.y > H + 2) { bs.y = -2; bs.x = Math.random() * W; }
           }
-          if (state !== "playing") { draw(); requestAnimationFrame(step); return; }
+          if (state !== "playing") { draw(); loopOn = true; requestAnimationFrame(step); return; }
 
           speed = 1 + Math.min(2.2, frame / 2400);
           // ship movement
@@ -750,7 +758,7 @@
             dr.x += Math.sin(dr.sway) * dr.swayAmp;
             if (dr.y > H + 40) { drones.splice(d, 1); continue; }
             var dx = Math.abs(dr.x - ship.x), dy = Math.abs(dr.y - ship.y);
-            if (dx < (dr.w + ship.w) / 2 - 14 && dy < (dr.h + ship.h) / 2 - 8) { crash(); return; }
+            if (dx < (dr.w + ship.w) / 2 - 14 && dy < (dr.h + ship.h) / 2 - 8) { crash(); loopOn = true; requestAnimationFrame(step); return; }
           }
           // stars
           for (var st = stars.length - 1; st >= 0; st--) {
@@ -774,6 +782,7 @@
           }
           if (shake > 0) shake--;
           draw();
+          loopOn = true;
           requestAnimationFrame(step);
         }
         function draw() {
@@ -847,7 +856,7 @@
           return { x: (e.clientX - r.left) * (W / r.width), y: (e.clientY - r.top) * (H / r.height) };
         }
         canvas.addEventListener("pointerdown", function (e) {
-          if (state !== "playing") return;
+          if (state !== "playing") { startGame(); return; }
           pointer = canvasPos(e);
           canvas.setPointerCapture(e.pointerId);
         });
